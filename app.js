@@ -22,8 +22,8 @@ mongoose.connect(process.env.MONGO_URL, {
 });
 
 // Routes
-const userRoutes = require("./routes/users");
-app.use("/users", userRoutes);
+const routes = require("./routes"); // Import the consolidated routes
+app.use("/", routes); // Use the consolidated routes
 
 // Celebrate errors
 app.use(errors());

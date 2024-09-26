@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const {
-  signup,
-  signin,
+  createUser,
+  login,
   getCurrentUser,
   saveGame,
 } = require("../controllers/users");
@@ -13,10 +13,10 @@ const {
 } = require("../middlewares/validation");
 
 // Route to sign up a new user
-router.post("/signup", validateUserSignup, signup);
+router.post("/signup", validateUserSignup, createUser);
 
 // Route to sign in a user
-router.post("/signin", validateUserSignin, signin);
+router.post("/signin", validateUserSignin, login);
 
 // Route to get the current user (authenticated)
 router.get("/me", auth, getCurrentUser);
