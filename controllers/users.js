@@ -25,14 +25,12 @@ const getCurrentUser = (req, res, next) => {
 
 const createUser = async (req, res, next) => {
   const { name, email, password } = req.body;
-
+  console.log(req.body);
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     const user = await User.create({
       name,
       email,
-      password: hashedPassword,
+      password,
     });
 
     // eslint-disable-next-line no-unused-vars
@@ -42,7 +40,7 @@ const createUser = async (req, res, next) => {
   } catch (err) {
     console.error(err);
     if (err.name === "ValidationError") {
-      return next(new BadRequestError("Invalid data provided."));
+      return next(new BadRequestError("err.message"));
     }
     if (err.code === 11000) {
       return next(new ConflictError("Conflict with existing data."));
@@ -59,17 +57,19 @@ const login = async (req, res, next) => {
   }
 
   try {
-    const user = await User.findUserByCredentials(email, password);
-
-    const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: "7d" });
-
-    return res.status(200).send({ token });
-  } catch (err) {
-    console.error(err);
-    if (err.message === "Invalid email or password") {
-      return next(new UnauthorizedError("Invalid email or password."));
+    const user = await User.findOne({ email }).select("+password"); // Include password
+    if (!user) {
+      throw new UnauthorizedError("Invalid email or password");
     }
 
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    if (!isPasswordCorrect) {
+      throw new UnauthorizedError("Invalid email or password");
+    }
+
+    const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: "7d" });
+    return res.status(200).send({ token });
+  } catch (err) {
     return next(err);
   }
 };

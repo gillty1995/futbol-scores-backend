@@ -3,7 +3,7 @@ const {
   saveGame,
   getSavedGames,
   deleteGame,
-} = require("../controllers/savedGames");
+} = require("../controllers/savedGame");
 const auth = require("../middlewares/auth");
 const { validateGameSave } = require("../middlewares/validation");
 

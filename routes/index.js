@@ -12,7 +12,7 @@ const {
   saveGame,
   getSavedGames,
   deleteGame,
-} = require("../controllers/savedGames");
+} = require("../controllers/savedGame");
 
 // User Routes
 router.post("/signup", validateUserSignup, createUser); // Sign up a new user

@@ -1,4 +1,4 @@
-const SavedGame = require("../models/SavedGame");
+const SavedGame = require("../models/savedGame");
 const NotFoundError = require("../utils/notFoundError");
 const BadRequestError = require("../utils/badRequestError");
 
