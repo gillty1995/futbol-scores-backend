@@ -5,18 +5,53 @@ const mongoose = require("mongoose");
 
 const saveGame = async (req, res, next) => {
   console.log("Request Body:", req.body);
-  const { fixtureId } = req.body;
+  const {
+    fixtureId,
+    homeTeamId,
+    awayTeamId,
+    homeTeamName,
+    awayTeamName,
+    homeTeamLogo,
+    awayTeamLogo,
+    dateTime,
+    liveScore,
+    liveEvents,
+  } = req.body;
   const userId = req.user._id;
 
-  if (!fixtureId) {
-    return next(new BadRequestError('"fixtureId" is required.'));
+  // Validate required fields
+  if (
+    !fixtureId ||
+    !homeTeamId ||
+    !awayTeamId ||
+    !homeTeamName ||
+    !awayTeamName ||
+    !dateTime
+  ) {
+    return next(new BadRequestError("All fields are required."));
   }
 
   try {
     const savedGameData = {
       fixtureId,
       user: userId,
+      teams: {
+        home: {
+          id: homeTeamId,
+          name: homeTeamName,
+          logo: homeTeamLogo,
+        },
+        away: {
+          id: awayTeamId,
+          name: awayTeamName,
+          logo: awayTeamLogo,
+        },
+      },
+      dateTime,
+      liveScore,
+      liveEvents,
     };
+
     console.log("Data to save:", savedGameData);
 
     const savedGame = await SavedGame.create(savedGameData);
