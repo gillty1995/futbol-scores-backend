@@ -15,13 +15,13 @@ const {
 } = require("../controllers/savedGame");
 
 // User Routes
-router.post("/signup", validateUserSignup, createUser); // Sign up a new user
-router.post("/signin", validateUserSignin, login); // Sign in a user
-router.get("/me", auth, getCurrentUser); // Get current user (authenticated)
+router.post("/signup", validateUserSignup, createUser);
+router.post("/signin", validateUserSignin, login);
+router.get("/me", auth, getCurrentUser);
 
 // Saved Game Routes
-router.post("/me/games", auth, validateGameSave, saveGame); // Save a game to the user's saved games (authenticated)
-router.get("/me/games", auth, getSavedGames); // Get all saved games for the current user (authenticated)
-router.delete("/me/games/:gameId", auth, deleteGame); // Delete a saved game (authenticated)
+router.post("/me/games", auth, validateGameSave, saveGame);
+router.get("/me/games", auth, getSavedGames);
+router.delete("/me/games/:fixtureId", auth, deleteGame);
 
 module.exports = router;

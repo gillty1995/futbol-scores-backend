@@ -1,22 +1,34 @@
 const SavedGame = require("../models/savedGame");
 const NotFoundError = require("../utils/notFoundError");
 const BadRequestError = require("../utils/badRequestError");
+const mongoose = require("mongoose");
 
 const saveGame = async (req, res, next) => {
-  const { title, genre } = req.body;
-  const userId = req.user._id; // Get the user ID from the authenticated user
+  console.log("Request Body:", req.body);
+  const { fixtureId } = req.body;
+  const userId = req.user._id;
+
+  if (!fixtureId) {
+    return next(new BadRequestError('"fixtureId" is required.'));
+  }
 
   try {
-    const savedGame = await SavedGame.create({ title, genre, user: userId });
+    const savedGameData = {
+      fixtureId,
+      user: userId,
+    };
+    console.log("Data to save:", savedGameData);
+
+    const savedGame = await SavedGame.create(savedGameData);
     return res.status(201).send(savedGame);
   } catch (err) {
-    console.error(err);
+    console.error("Error details:", err);
     return next(new BadRequestError("Invalid data provided."));
   }
 };
 
 const getSavedGames = async (req, res, next) => {
-  const userId = req.user._id; // Get the user ID from the authenticated user
+  const userId = req.user._id;
 
   try {
     const savedGames = await SavedGame.find({ user: userId });
@@ -28,18 +40,18 @@ const getSavedGames = async (req, res, next) => {
 };
 
 const deleteGame = async (req, res, next) => {
-  const { gameId } = req.params;
-  const userId = req.user._id; // Get the user ID from the authenticated user
+  const { fixtureId } = req.params;
+  const userId = req.user._id;
 
   try {
     const game = await SavedGame.findOneAndDelete({
-      _id: gameId,
+      fixtureId,
       user: userId,
     });
     if (!game) {
       return next(new NotFoundError("Game not found."));
     }
-    return res.status(204).send(); // No content to send back
+    return res.status(204).send();
   } catch (err) {
     console.error(err);
     return next(err);

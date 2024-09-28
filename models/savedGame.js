@@ -2,13 +2,10 @@ const mongoose = require("mongoose");
 
 const savedGameSchema = new mongoose.Schema(
   {
-    title: {
+    fixtureId: {
       type: String,
       required: true,
-    },
-    genre: {
-      type: String,
-      required: true,
+      unique: true,
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,

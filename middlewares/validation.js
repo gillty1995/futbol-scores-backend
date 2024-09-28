@@ -44,10 +44,22 @@ module.exports.validateUserSignin = celebrate({
 // Validation for saving games
 module.exports.validateGameSave = celebrate({
   body: Joi.object().keys({
-    gameId: Joi.string().required().messages({
-      "string.empty": 'The "gameId" field must be filled in',
+    fixtureId: Joi.string().required().messages({
+      "string.empty": 'The "fixtureId" field must be filled in',
     }),
-    // Add more fields here if necessary
+    homeTeamId: Joi.string().required().messages({
+      "string.empty": 'The "homeTeamId" field must be filled in',
+    }),
+    awayTeamId: Joi.string().required().messages({
+      "string.empty": 'The "awayTeamId" field must be filled in',
+    }),
+    score: Joi.string().optional().messages({
+      "string.empty": 'The "score" field can be empty.',
+    }),
+    dateTime: Joi.date().required().messages({
+      "date.base": 'The "dateTime" field must be a valid date.',
+      "date.empty": 'The "dateTime" field must be filled in',
+    }),
   }),
 });
 
