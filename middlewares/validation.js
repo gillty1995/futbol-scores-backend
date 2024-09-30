@@ -41,44 +41,6 @@ module.exports.validateUserSignin = celebrate({
   }),
 });
 
-module.exports.validateGameSave = celebrate({
-  body: Joi.object().keys({
-    fixtureId: Joi.string().required().messages({
-      "string.empty": 'The "fixtureId" field must be filled in',
-    }),
-    homeTeamId: Joi.string().required().messages({
-      "string.empty": 'The "homeTeamId" field must be filled in',
-    }),
-    awayTeamId: Joi.string().required().messages({
-      "string.empty": 'The "awayTeamId" field must be filled in',
-    }),
-    homeTeamName: Joi.string().required().messages({
-      "string.empty": 'The "homeTeamName" field must be filled in',
-    }),
-    awayTeamName: Joi.string().required().messages({
-      "string.empty": 'The "awayTeamName" field must be filled in',
-    }),
-    homeTeamLogo: Joi.string().uri().required().messages({
-      "string.uri": 'The "homeTeamLogo" field must be a valid URI.',
-      "string.empty": 'The "homeTeamLogo" field must be filled in',
-    }),
-    awayTeamLogo: Joi.string().uri().required().messages({
-      "string.uri": 'The "awayTeamLogo" field must be a valid URI.',
-      "string.empty": 'The "awayTeamLogo" field must be filled in',
-    }),
-    dateTime: Joi.date().required().messages({
-      "date.base": 'The "dateTime" field must be a valid date.',
-      "date.empty": 'The "dateTime" field must be filled in',
-    }),
-    liveScore: Joi.object().optional().messages({
-      "object.base": 'The "liveScore" field must be an object.',
-    }),
-    liveEvents: Joi.array().optional().messages({
-      "array.base": 'The "liveEvents" field must be an array.',
-    }),
-  }),
-});
-
 // Validation for the ID parameter
 module.exports.validateId = celebrate({
   params: Joi.object().keys({
@@ -86,6 +48,67 @@ module.exports.validateId = celebrate({
       "string.length": 'The "id" must be a hexadecimal string of 24 characters',
       "string.hex": 'The "id" must be a valid hexadecimal value',
       "string.empty": 'The "id" field must be filled in',
+    }),
+  }),
+});
+
+module.exports.validateGameSave = celebrate({
+  body: Joi.object().keys({
+    fixtureId: Joi.string().required().messages({
+      "string.empty": 'The "fixtureId" field must be filled in',
+    }),
+    user: Joi.string().required().messages({
+      "string.empty": 'The "user" field must be filled in',
+    }),
+    teams: Joi.object()
+      .keys({
+        home: Joi.object()
+          .keys({
+            id: Joi.string().required().messages({
+              "string.empty": 'The "home.id" field must be filled in',
+            }),
+            name: Joi.string().required().messages({
+              "string.empty": 'The "home.name" field must be filled in',
+            }),
+            logo: Joi.string().uri().required().messages({
+              "string.uri": 'The "home.logo" field must be a valid URI.',
+              "string.empty": 'The "home.logo" field must be filled in',
+            }),
+          })
+          .required(),
+        away: Joi.object()
+          .keys({
+            id: Joi.string().required().messages({
+              "string.empty": 'The "away.id" field must be filled in',
+            }),
+            name: Joi.string().required().messages({
+              "string.empty": 'The "away.name" field must be filled in',
+            }),
+            logo: Joi.string().uri().required().messages({
+              "string.uri": 'The "away.logo" field must be a valid URI.',
+              "string.empty": 'The "away.logo" field must be filled in',
+            }),
+          })
+          .required(),
+      })
+      .required(),
+    dateTime: Joi.date().required().messages({
+      "date.base": 'The "dateTime" field must be a valid date.',
+      "date.empty": 'The "dateTime" field must be filled in',
+    }),
+    status: Joi.string()
+      .valid("scheduled", "live", "completed")
+      .required()
+      .messages({
+        "any.only":
+          'The "status" field must be one of: scheduled, live, completed.',
+        "string.empty": 'The "status" field must be filled in',
+      }),
+    liveScore: Joi.object().optional().messages({
+      "object.base": 'The "liveScore" field must be an object.',
+    }),
+    liveEvents: Joi.array().optional().messages({
+      "array.base": 'The "liveEvents" field must be an array.',
     }),
   }),
 });

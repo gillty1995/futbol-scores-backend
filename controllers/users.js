@@ -40,7 +40,7 @@ const createUser = async (req, res, next) => {
   } catch (err) {
     console.error(err);
     if (err.name === "ValidationError") {
-      return next(new BadRequestError("err.message"));
+      return next(new BadRequestError(err.message));
     }
     if (err.code === 11000) {
       return next(new ConflictError("Conflict with existing data."));
@@ -68,7 +68,10 @@ const login = async (req, res, next) => {
     }
 
     const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: "7d" });
-    return res.status(200).send({ token });
+    return res.status(200).send({
+      token,
+      user: { _id: user._id, email: user.email, name: user.name },
+    });
   } catch (err) {
     return next(err);
   }
