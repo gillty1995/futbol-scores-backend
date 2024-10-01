@@ -14,6 +14,7 @@ const saveGame = async (req, res, next) => {
     homeTeamLogo,
     awayTeamLogo,
     dateTime,
+    status,
     liveScore,
     liveEvents,
   } = req.body;
@@ -26,7 +27,8 @@ const saveGame = async (req, res, next) => {
     !awayTeamId ||
     !homeTeamName ||
     !awayTeamName ||
-    !dateTime
+    !dateTime ||
+    !status
   ) {
     return next(new BadRequestError("All fields are required."));
   }
@@ -48,6 +50,7 @@ const saveGame = async (req, res, next) => {
         },
       },
       dateTime,
+      status,
       liveScore,
       liveEvents,
     };
