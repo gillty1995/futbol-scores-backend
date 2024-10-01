@@ -5,12 +5,12 @@ const savedGameSchema = new mongoose.Schema(
     fixtureId: {
       type: String,
       required: true,
-      unique: true, // Ensures each game can only be saved once
+      unique: true,
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // Ensure this references your User model correctly
-      required: true, // Consider making this required
+      ref: "User",
+      required: true,
     },
     teams: {
       home: {
@@ -24,7 +24,7 @@ const savedGameSchema = new mongoose.Schema(
         },
         logo: {
           type: String,
-          required: true, // Assuming logo is essential to display
+          required: true,
         },
       },
       away: {
@@ -38,29 +38,29 @@ const savedGameSchema = new mongoose.Schema(
         },
         logo: {
           type: String,
-          required: true, // Assuming logo is essential to display
+          required: true,
         },
       },
     },
     dateTime: {
       type: Date,
-      required: true, // Ensure this captures when the game is scheduled
+      required: true,
     },
     status: {
       type: String,
-      enum: ["scheduled", "live", "completed"], // You can adjust this based on possible statuses
-      required: true, // Status should be required
+      enum: ["scheduled", "live", "completed"],
+      required: true,
     },
     liveScore: {
       type: Object,
-      default: {}, // Default to an empty object if no score is available
+      default: {},
     },
     liveEvents: {
       type: [Object],
-      default: [], // Default to an empty array if no events are available
+      default: [],
     },
   },
-  { timestamps: true } // Automatically adds createdAt and updatedAt fields
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("SavedGame", savedGameSchema);
