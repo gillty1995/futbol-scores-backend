@@ -34,6 +34,13 @@ const userSchema = new mongoose.Schema({
     minlength: 2,
     maxlength: 30,
   },
+
+  savedGames: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "SavedGame",
+    },
+  ],
 });
 
 userSchema.pre("save", async function (next) {

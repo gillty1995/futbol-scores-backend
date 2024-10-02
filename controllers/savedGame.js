@@ -1,4 +1,5 @@
 const SavedGame = require("../models/savedGame");
+const User = require("../models/users");
 const NotFoundError = require("../utils/notFoundError");
 const BadRequestError = require("../utils/badRequestError");
 const mongoose = require("mongoose");
@@ -55,6 +56,11 @@ const saveGame = async (req, res, next) => {
     console.log("Data to save:", savedGameData);
 
     const savedGame = await SavedGame.create(savedGameData);
+
+    await User.findByIdAndUpdate(userId, {
+      $addToSet: { savedGames: savedGame._id },
+    });
+
     return res.status(201).send(savedGame);
   } catch (err) {
     console.error("Error details:", err);
@@ -83,9 +89,15 @@ const deleteGame = async (req, res, next) => {
       fixtureId,
       user: userId,
     });
+
     if (!game) {
       return next(new NotFoundError("Game not found."));
     }
+
+    await User.findByIdAndUpdate(userId, {
+      $pull: { savedGames: game._id },
+    });
+
     return res.status(204).send();
   } catch (err) {
     console.error(err);
