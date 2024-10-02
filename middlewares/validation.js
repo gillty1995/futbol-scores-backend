@@ -52,6 +52,7 @@ module.exports.validateId = celebrate({
   }),
 });
 
+//  validation for save game
 module.exports.validateGameSave = celebrate({
   body: Joi.object().keys({
     fixtureId: Joi.string().required().messages({

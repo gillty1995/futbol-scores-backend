@@ -7,12 +7,7 @@ const saveGame = async (req, res, next) => {
   console.log("Request Body:", req.body);
   const {
     fixtureId,
-    homeTeamId,
-    awayTeamId,
-    homeTeamName,
-    awayTeamName,
-    homeTeamLogo,
-    awayTeamLogo,
+    teams: { home, away },
     dateTime,
     status,
     liveScore,
@@ -20,13 +15,15 @@ const saveGame = async (req, res, next) => {
   } = req.body;
   const userId = req.user._id;
 
-  // Validate required fields
+  // Validatation
   if (
     !fixtureId ||
-    !homeTeamId ||
-    !awayTeamId ||
-    !homeTeamName ||
-    !awayTeamName ||
+    !home.id ||
+    !away.id ||
+    !home.name ||
+    !away.name ||
+    !home.logo ||
+    !away.logo ||
     !dateTime ||
     !status
   ) {
@@ -39,14 +36,14 @@ const saveGame = async (req, res, next) => {
       user: userId,
       teams: {
         home: {
-          id: homeTeamId,
-          name: homeTeamName,
-          logo: homeTeamLogo,
+          id: home.id,
+          name: home.name,
+          logo: home.logo,
         },
         away: {
-          id: awayTeamId,
-          name: awayTeamName,
-          logo: awayTeamLogo,
+          id: away.id,
+          name: away.name,
+          logo: away.logo,
         },
       },
       dateTime,
