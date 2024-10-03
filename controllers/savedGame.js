@@ -102,7 +102,7 @@ const deleteGame = async (req, res, next) => {
       $pull: { savedGames: game._id },
     });
 
-    return res.status(204).send();
+    return res.status(200).json({ message: "Game unsaved successfully." });
   } catch (err) {
     console.error(err);
     return next(err);
