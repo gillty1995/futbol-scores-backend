@@ -57,9 +57,13 @@ const saveGame = async (req, res, next) => {
 
     const savedGame = await SavedGame.create(savedGameData);
 
-    await User.findByIdAndUpdate(userId, {
-      $addToSet: { savedGames: savedGame._id },
-    });
+    await User.findByIdAndUpdate(
+      userId,
+      {
+        $addToSet: { savedGames: savedGame },
+      },
+      { new: true }
+    );
 
     return res.status(201).send(savedGame);
   } catch (err) {

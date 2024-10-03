@@ -12,10 +12,12 @@ const getCurrentUser = (req, res, next) => {
   const userId = req.user._id;
 
   User.findById(userId)
+    .populate("savedGames")
     .then((user) => {
       if (!user) {
         return next(new NotFoundError("Data not found."));
       }
+      console.log(user);
       return res.send(user);
     })
     .catch((err) => {
