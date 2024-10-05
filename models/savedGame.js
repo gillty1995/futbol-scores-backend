@@ -59,6 +59,16 @@ const savedGameSchema = new mongoose.Schema(
       type: [Object],
       default: [],
     },
+    league: {
+      id: {
+        type: String,
+        required: true,
+      },
+      name: {
+        type: String,
+        required: true,
+      },
+    },
   },
   { timestamps: true }
 );

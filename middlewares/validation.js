@@ -111,5 +111,15 @@ module.exports.validateGameSave = celebrate({
     liveEvents: Joi.array().optional().messages({
       "array.base": 'The "liveEvents" field must be an array.',
     }),
+    league: Joi.object()
+      .keys({
+        id: Joi.string().required().messages({
+          "string.empty": 'The "league.id" field must be filled in',
+        }),
+        name: Joi.string().required().messages({
+          "string.empty": 'The "league.name" field must be filled in',
+        }),
+      })
+      .required(),
   }),
 });

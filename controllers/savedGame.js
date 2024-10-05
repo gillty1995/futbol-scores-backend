@@ -13,6 +13,7 @@ const saveGame = async (req, res, next) => {
     status,
     liveScore,
     liveEvents,
+    league,
   } = req.body;
   const userId = req.user._id;
 
@@ -26,7 +27,10 @@ const saveGame = async (req, res, next) => {
     !home.logo ||
     !away.logo ||
     !dateTime ||
-    !status
+    !status ||
+    !league ||
+    !league.id ||
+    !league.name
   ) {
     return next(new BadRequestError("All fields are required."));
   }
@@ -51,6 +55,10 @@ const saveGame = async (req, res, next) => {
       status,
       liveScore,
       liveEvents,
+      league: {
+        id: league.id,
+        name: league.name,
+      },
     };
 
     console.log("Data to save:", savedGameData);
