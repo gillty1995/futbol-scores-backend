@@ -1,5 +1,8 @@
 require("dotenv").config();
 
+console.log("JWT_SECRET:", process.env.JWT_SECRET);
+console.log("MONGO_URL:", process.env.MONGO_URL);
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -35,6 +38,6 @@ app.use(errors());
 app.use(errorHandler);
 
 // Start the server
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on port ${PORT}`);
 });
